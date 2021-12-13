@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kustomize-controller
+  namespace: flux-system
+spec:
+  template:
+    spec:
+      containers:
+        - name: manager
+          env:
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /keyfile.json
+          volumeMounts:
+            - mountPath: /keyfile.json
+              name: google-secret
+              subPath: keyfile.json
+      volumes:
+        - name: google-secret
+          secret:
+            secretName: google-applications-credentials
